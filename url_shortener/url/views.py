@@ -21,7 +21,7 @@ def index(request):
             new_url.pub_date = timezone.now()
             new_url.count = 0
             new_url.save()
-            return HttpResponseRedirect(reverse('url:shorten', args=(new_url.slug,)))
+            return HttpResponseRedirect(reverse('url:shorten', args=(new_url.shorten_url,)))
         #return render(request, 'url/shorten.html', {'url' : new_url}) 
     return render(request, 'url/index.html', {'form': form})
     
@@ -34,13 +34,14 @@ def generate(shorten_url_length):
 
 
 def shorten(request, slug):
-    url = get_object_or_404(Url, slug=slug)
+    url = get_object_or_404(Url, shorten_url=slug)
     return render(request, 'url/shorten.html', {'url' : url})
     
 
 def redirect_outside(request, slug):
     url = get_object_or_404(Url, shorten_url=slug)
     url.count+=1
+    url.last_access = timezone.now()
     url.save()
     return redirect(url.original_url)
 
