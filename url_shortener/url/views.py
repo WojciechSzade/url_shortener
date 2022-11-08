@@ -43,7 +43,7 @@ def redirect_outside(request, slug):
     url.count+=1
     url.last_access = timezone.now()
     url.save()
-    return redirect(url.original_url)
+    return redirect("http://" + url.original_url)
 
 
  
