@@ -16,18 +16,9 @@ def index(request):
         form = UrlForm(request.POST)
         if form.is_valid():
             new_url = form.save(commit=False)
-            if (new_url.shorten_url == ""):
-                    new_url.shorten_url = generate(5)
             new_url.save()
             return HttpResponseRedirect(reverse('url:shorten', args=(new_url.shorten_url,)))
     return render(request, 'url/index.html', {'form': form})
-
-
-def generate(shorten_url_length):
-    shorten_url = ""
-    for i in range(shorten_url_length):
-        shorten_url += random.choice(string.ascii_letters)
-    return shorten_url
 
 
 def shorten(request, slug):
@@ -40,6 +31,7 @@ def redirect_outside(request, slug):
     url.count += 1
     url.last_access = timezone.now()
     url.save()
-    url.original_url= url.original_url.replace("http://", "")
-    url.original_url= url.original_url.replace("https://", "")
-    return redirect("http://" + url.original_url)
+    return redirect(url.original_url_link)
+    # url.original_url= url.original_url.replace("http://", "")
+    # url.original_url= url.original_url.replace("https://", "")
+    # return redirect("http://" + url.original_url)
