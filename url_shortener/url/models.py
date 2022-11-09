@@ -7,7 +7,7 @@ class Url(models.Model):
     original_url = models.CharField(max_length=200)
     shorten_url = models.SlugField(default ="", blank = True, null=False, db_index=True)
     pub_date = models.DateTimeField()
-    last_access = models.DateTimeField()
+    last_access = models.DateTimeField() 
     count = models.IntegerField(default=0)
     def __str__(self):
         return self.original_url
