@@ -36,7 +36,7 @@ def validate_url_prefix(value):
 
 def validate_url_text(value):
     if "." not in value:
-        raise ValidationError("Url must contain at least one dot")
+        raise ValidationError("Url must contain at least one dot!")
 
 
 def validate_url_link(value):

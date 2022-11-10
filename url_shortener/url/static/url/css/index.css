@@ -113,6 +113,13 @@ h1 {
   margin: 0 0 1.5rem;
 }
 
+.errors {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 1.5rem;
+}
+
 header {
   position: absolute;
   top: 0;
