@@ -11,9 +11,14 @@
                 <h2>Szade's link shrinker</h2>
             </header>
             <div class="cover">
-                <h4>Your shorten url for </br>{{ url.original_url }} </br>is </br><a href="http://{{ request.get_host }}/{{ url.shorten_url }}">{{ request.get_host }}/{{url.shorten_url}}</a> </h4>
-                </div>
+                <h4>Your shorten url for </br>
+                    <a href = "{{ url.original_url_link }}">{{ url.original_url }}<a/> </br
+                    >is </br>
+                    <div class="output"<p>{{ request.get_host }}/{{ url.shorten_url }}</div> </h4>
+                        <button type="button" class="button" onclick="window.location.href='/'">Return</button>
             </div>
         </div>
     </body>
 </html>
+
+><a href="http://{{ request.get_host }}/{{ url.shorten_url }}">{{ request.get_host }}/{{url.shorten_url}}</a>

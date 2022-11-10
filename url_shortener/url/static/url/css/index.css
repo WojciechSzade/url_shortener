@@ -23,7 +23,21 @@ h4 {
 
 a {
   color: #fff;
-  text-decoration: underline;
+  text-decoration: none;
+}
+
+
+
+
+.output {
+  background-color: #2980b9;
+  border: 1px solid #fff;
+  box-sizing: border-box;
+  display: block;
+  line-height: 50px;
+  margin: 10px 0;
+  padding: 2px 5px;
+  width: 350px;
 }
 
 
@@ -32,7 +46,7 @@ body {
   padding: 0;
   font-family: "arial", heletica, sans-serif;
   font-size: 12px;
-  background: #2980b9 url('https://static.tumblr.com/03fbbc566b081016810402488936fbae/pqpk3dn/MRSmlzpj3/tumblr_static_bg3.png') repeat 0 0;
+  background: #2980b9 url("../images/background.png") repeat 0 0;
   -webkit-animation: 10s linear 0s normal none infinite animate;
   -moz-animation: 10s linear 0s normal none infinite animate;
   -ms-animation: 10s linear 0s normal none infinite animate;
@@ -130,6 +144,8 @@ header {
   align-items: center;
 }
 
+
+
 .flex-form button[type="submit"] {
   background: #ef3f5a;
   border: 1px solid #ef3f5a;
@@ -139,6 +155,19 @@ header {
   -webkit-transition: all 0.2s;
   -moz-transition: all 0.2s;
   transition: all 0.2s;
+}
+
+button[type="button"] {
+  background: #ef3f5a;
+  border: 1px solid #ef3f5a;
+  color: #fff;
+  padding: 0 30px;
+  cursor: pointer;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  transition: all 0.2s;
+  width: 150px;
+  height: 40px;
 }
 
 .flex-form button:hover {
@@ -203,10 +232,6 @@ input[type="text"] {
     font-size: 2rem;
   }
 
-  .cover {
-    padding: 20px;
-  }
-
 }
 
 @media all and (max-width:360px) {
@@ -223,7 +248,4 @@ input[type="text"] {
     flex-basis: 0;
   }
 
-  label {
-    display: none;
-  }
 }
