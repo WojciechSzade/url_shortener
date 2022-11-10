@@ -1,14 +1,27 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta  charset="utf-8" />
     </head>
+    <link rel="stylesheet" href="{% static 'url/css/index.css' %}">
     <body>
-        <form method="post">
-            {% csrf_token %}
-            {{ form }}
-            <button class="button" type="submit">Submit</button>
-        </form>
-    </form>
+        <div class="container">
+
+            <header>
+                <h2>Szade's link shrinker</h2>
+            </header>
+    
+            <div class="cover">
+                <h1>Enter the link you want to shorten.</h1>
+                <form class="flex-form" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="original_url" maxlength="250" required="" id="id_original_url" placeholder="What link you want to shorten?">
+                    <button class="button" type="submit">Shorten</button>
+                </form>
+                </div>
+            </div>
+    
+        </div>
     </body>
 </html>

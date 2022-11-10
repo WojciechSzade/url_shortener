@@ -1,9 +1,22 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta  charset="utf-8" />
     </head>
+    <link rel="stylesheet" href="{% static 'url/css/index.css' %}">
     <body>
-        <h4>The shorten url for {{ url.original_url }} is <a href="http://{{ request.get_host }}/{{ url.shorten_url }}">{{ request.get_host }}/{{url.shorten_url}}</a> </h4>
+        <div class="container">
+
+            <header>
+                <h2>Szade's link shrinker</h2>
+            </header>
+    
+            <div class="cover">
+                <h4>Your shorten url for {{ url.original_url }} is </br><a href="http://{{ request.get_host }}/{{ url.shorten_url }}">{{ request.get_host }}/{{url.shorten_url}}</a> </h4>
+                </div>
+            </div>
+    
+        </div>
     </body>
 </html>
