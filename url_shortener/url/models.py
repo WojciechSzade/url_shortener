@@ -71,8 +71,8 @@ class Url(models.Model):
     def save(self, *args, **kwargs):
         if not self.shorten_url:
             self.shorten_url = generateValidShortenUrl(self.shorten_url_length)
-        if not validate_url_prefix(self.original_url):
+        if not validate_url_prefix(self.original_url) and self.original_url_link is None:
             self.original_url_link = "http://" + self.original_url
-        else:
+        elif validate_url_prefix(self.original_url) and self.original_url_link is None:
             self.original_url_link = self.original_url
         super(Url, self).save(*args, **kwargs)
