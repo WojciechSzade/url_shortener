@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.utils import timezone
 from django.test.utils import setup_test_environment, teardown_test_environment
 from django.test import Client
+from django.urls import reverse
 
 from .models import *
 
@@ -68,28 +69,28 @@ class UrlModelTests(TestCase):
         test_url.save()
         self.assertEqual(test_url.original_url_link, "https://google.com")
 
-    class UrlViewTests(TestCase):
-        def test_client_get_request(self):
-            client = Client()
-            response = client.get('/')
-            self.assertEqual(response.status_code, 200)
+class UrlViewTests(TestCase):
+    def test_client_get_request(self):
+        client = Client()
+        response = client.get('/')
+        self.assertEqual(response.status_code, 200)
 
-        def test_client_get_incorrect_request(self):
-            client = Client()
-            response = client.get('/incorrect', follow=True)
-            self.assertEqual(response.status_code, 404)
+    def test_client_get_incorrect_request(self):
+        client = Client()
+        response = client.get('/incorrect', follow=True)
+        self.assertEqual(response.status_code, 404)
 
-        def test_client_get_request_shorten_view(self):
-            test_url = Url(original_url="google.com")
-            test_url.save()
-            client = Client()
-            response = client.get('/shorten {{ test_url.shorten_url }}')
-            self.assertEqual(response.status_code, 200)
+    def test_client_get_request_shorten_view(self):
+        test_url = Url(original_url="google.com")
+        test_url.save()
+        client = Client()
+        response = client.get(reverse('url:shorten', args=(test_url.shorten_url,)))
+        self.assertEqual(response.status_code, 200)
 
-        def test_client_get_request_redirect_outside(self):
-            test_url = Url(original_url="google.com")
-            test_url.save()
-            client = Client()
-            response = client.get('/{{ test_url.shorten_url }}')
-            self.assertEqual(response.status_code, 302)
+    def test_client_get_request_redirect_outside(self):
+        test_url = Url(original_url="google.com")
+        test_url.save()
+        client = Client()
+        response = client.get(reverse('url:redirect_outside', args=(test_url.shorten_url,)))
+        self.assertEqual(response.status_code, 302)
 
