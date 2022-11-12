@@ -11,16 +11,25 @@ valid_url_prefix = ["http://", "https://", "ftp://",
                     "ftps://"]  # used in validate_url_prefix
 maxShortenUrlLength = 8  # max length of shorten url
 
+def validate_value_to_validators(value):
+    if type(value) != str:
+        raise ValidationError("Value must be string")
+    for i in value:
+        if i not in string.ascii_letters + string.digits + string.punctuation:
+            raise ValidationError("Value can contain only letters and digits and punctuations! No spaces and special charactes allowed!")
+def validate_value_to_generator(value):
+    if type(value) != int:
+        raise ValidationError("Value must be integer")
+    if value < 1:
+        raise ValidationError("Value must be at least 1")
+    if value > maxShortenUrlLength:
+        raise ValidationError(
+            "Value must be at most" + str(maxShortenUrlLength) + "or Were unable to generate unique url with length less than" + str(maxShortenUrlLength))
+        
 
 # function used in generateValidShortenUrl to generate a combination of letters and digits of given length
 def generate(shorten_url_length):
-    if type(shorten_url_length) != int:
-        raise ValidationError("Shorten url length must be integer")
-    if shorten_url_length < 1:
-        raise ValidationError("Shorten url length must be at least 1")
-    if shorten_url_length > maxShortenUrlLength:
-        raise ValidationError(
-            "Shorten url length must be at most" + str(maxShortenUrlLength))
+    validate_value_to_generator(shorten_url_length)
     shorten_url = ""
     for i in range(shorten_url_length):
         shorten_url += random.choice(string.ascii_letters + string.digits)
@@ -29,13 +38,7 @@ def generate(shorten_url_length):
 
 # function used to generate valid, unique shorten url
 def generateValidShortenUrl(shorten_url_length):
-    if type(shorten_url_length) != int:
-        raise ValidationError("Shorten url length must be integer")
-    if shorten_url_length < 1:
-        raise ValidationError("Shorten url length must be at least 1")
-    if shorten_url_length > maxShortenUrlLength:
-        raise ValidationError(
-            "Shorten url length must be at most" + str(maxShortenUrlLength) + "or Were unable to generate unique url with length less than" + str(maxShortenUrlLength))
+    validate_value_to_generator(shorten_url_length)
     shorten_url = generate(shorten_url_length)
     for i in range(9):
         if Url.objects.filter(shorten_url=shorten_url).exists():
@@ -49,8 +52,7 @@ def generateValidShortenUrl(shorten_url_length):
 
 # function used to validate if the url starts with valid prefix (protocol), doesn't raise error (used to generate valid url)
 def validate_url_prefix(value):
-    if type(value) != str:
-        raise ValidationError("Url must be string")
+    validate_value_to_validators(value)
     for prefix in valid_url_prefix:
         if value.startswith(prefix):
             return True
@@ -58,19 +60,13 @@ def validate_url_prefix(value):
 
 
 def validate_url_text(value):  # used in validate_url_link
-    if type(value) != str:
-        raise ValidationError("Url must be string")
+    validate_value_to_validators(value)
     if "." not in value:
         raise ValidationError("Url must contain at least one dot!")
     if len(value) < 2:
         raise ValidationError("Url must contain at least 2 characters")
     if value[0] == ".":
         raise ValidationError("Url can't start with dot")
-    for i in value:
-        if i == " ":
-            raise ValidationError("Url can't contain spaces")
-        elif i not in string.ascii_letters + string.digits + string.punctuation:
-            raise ValidationError("Url can't contain special characters")
 
 
 # function used to validate if the url starts with valid prefix (protocol) and has at least one dot (raises error)
