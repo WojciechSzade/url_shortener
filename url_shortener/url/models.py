@@ -11,13 +11,19 @@ valid_url_prefix = ["http://", "https://", "ftp://",
                     "ftps://"]  # used in validate_url_prefix
 maxShortenUrlLength = 8  # max length of shorten url
 
+
 def validate_value_to_validators(value):
+    """function used to validate if the value is valid -> is it a string only containg proper characters for validators"""
     if type(value) != str:
         raise ValidationError("Value must be string")
     for i in value:
         if i not in string.ascii_letters + string.digits + string.punctuation:
-            raise ValidationError("Value can contain only letters and digits and punctuations! No spaces and special charactes allowed!")
+            raise ValidationError(
+                "Value can contain only letters and digits and punctuations! No spaces and special charactes allowed!")
+
+
 def validate_value_to_generator(value):
+    """function used to validate if the value is valid -> is it a number between 1 and maxShortenUrlLength"""
     if type(value) != int:
         raise ValidationError("Value must be integer")
     if value < 1:
@@ -25,10 +31,10 @@ def validate_value_to_generator(value):
     if value > maxShortenUrlLength:
         raise ValidationError(
             "Value must be at most" + str(maxShortenUrlLength) + "or Were unable to generate unique url with length less than" + str(maxShortenUrlLength))
-        
 
-# function used in generateValidShortenUrl to generate a combination of letters and digits of given length
+
 def generate(shorten_url_length):
+    """function used in generateValidShortenUrl to generate a combination of letters and digits of given length"""
     validate_value_to_generator(shorten_url_length)
     shorten_url = ""
     for i in range(shorten_url_length):
@@ -36,8 +42,8 @@ def generate(shorten_url_length):
     return shorten_url
 
 
-# function used to generate valid, unique shorten url
 def generateValidShortenUrl(shorten_url_length):
+    """function used to generate valid, unique shorten url"""
     validate_value_to_generator(shorten_url_length)
     shorten_url = generate(shorten_url_length)
     for i in range(9):
@@ -50,8 +56,8 @@ def generateValidShortenUrl(shorten_url_length):
         return generateValidShortenUrl(shorten_url_length + 1)
 
 
-# function used to validate if the url starts with valid prefix (protocol), doesn't raise error (used to generate valid url)
 def validate_url_prefix(value):
+    """function used to validate if the url starts with valid prefix (protocol), doesn"t raise error (used to generate valid url)"""
     validate_value_to_validators(value)
     for prefix in valid_url_prefix:
         if value.startswith(prefix):
@@ -59,7 +65,8 @@ def validate_url_prefix(value):
     return False
 
 
-def validate_url_text(value):  # used in validate_url_link
+def validate_url_text(value):
+    """used in validate_url_link"""
     validate_value_to_validators(value)
     if "." not in value:
         raise ValidationError("Url must contain at least one dot!")
@@ -69,8 +76,8 @@ def validate_url_text(value):  # used in validate_url_link
         raise ValidationError("Url can't start with dot")
 
 
-# function used to validate if the url starts with valid prefix (protocol) and has at least one dot (raises error)
 def validate_url_link(value):
+    """function used to validate if the url starts with valid prefix (protocol) and has at least one dot (raises error)"""
     if not validate_url_prefix(value):
         raise ValidationError(
             "Url must start with http://, https://, ftp:// or ftps://")
@@ -83,7 +90,7 @@ def validate_date(value):
 
 
 class Url(models.Model):
-    # default value for shorten_url_length is 5, changed automaticly if generateValidShortenUrl can't generate unique value of this lenght, max length is in maxShortenUrlLength
+    # default value for shorten_url_length is 5, changed automaticly if generateValidShortenUrl can"t generate unique value of this lenght, max length is in maxShortenUrlLength
     shorten_url_length = models.IntegerField(default=5, validators=(
         MaxValueValidator(maxShortenUrlLength), MinValueValidator(1)))
     original_url = models.CharField(max_length=250, blank=False, help_text="Enter the URL you want to shorten", validators=[

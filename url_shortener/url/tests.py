@@ -129,7 +129,7 @@ class ShortenUrlGeneratorTests(TestCase):
         for i in shorten_url:
             self.assertIn(i, string.ascii_letters + string.digits)
         self.assertNotIn(shorten_url, Url.objects.all(
-        ).values_list('shorten_url', flat=True))
+        ).values_list("shorten_url", flat=True))
 
     def test_generateValidShortenUrl_with_5(self):
         shorten_url = generateValidShortenUrl(5)
@@ -138,7 +138,7 @@ class ShortenUrlGeneratorTests(TestCase):
         for i in shorten_url:
             self.assertIn(i, string.ascii_letters + string.digits)
         self.assertNotIn(shorten_url, Url.objects.all(
-        ).values_list('shorten_url', flat=True))
+        ).values_list("shorten_url", flat=True))
 
     def test_generateValidShortenUrl_with_8(self):
         shorten_url = generateValidShortenUrl(8)
@@ -147,7 +147,7 @@ class ShortenUrlGeneratorTests(TestCase):
         for i in shorten_url:
             self.assertIn(i, string.ascii_letters + string.digits)
         self.assertNotIn(shorten_url, Url.objects.all(
-        ).values_list('shorten_url', flat=True))
+        ).values_list("shorten_url", flat=True))
 
     def test_generateValidShortenUrl_with_1_and_existing_shorten_url_should_generate_2(self):
         for i in (string.ascii_letters + string.digits):
@@ -158,7 +158,7 @@ class ShortenUrlGeneratorTests(TestCase):
         for i in shorten_url:
             self.assertIn(i, string.ascii_letters + string.digits)
         self.assertNotIn(shorten_url, Url.objects.all(
-        ).values_list('shorten_url', flat=True))
+        ).values_list("shorten_url", flat=True))
 
 
 class UrlValidatorsTests(TestCase):
@@ -251,12 +251,12 @@ class UrlValidatorsTests(TestCase):
 class UrlViewTests(TestCase):
     def test_client_get_request(self):
         client = Client()
-        response = client.get('/')
+        response = client.get("/")
         self.assertEqual(response.status_code, 200)
 
     def test_client_get_incorrect_request(self):
         client = Client()
-        response = client.get('/incorrect', follow=True)
+        response = client.get("/incorrect", follow=True)
         self.assertEqual(response.status_code, 404)
 
     def test_client_get_request_shorten_view(self):
@@ -264,7 +264,7 @@ class UrlViewTests(TestCase):
         test_url.save()
         client = Client()
         response = client.get(
-            reverse('url:shorten', args=(test_url.shorten_url,)))
+            reverse("url:shorten", args=(test_url.shorten_url,)))
         self.assertEqual(response.status_code, 200)
 
     def test_client_get_request_redirect_outside(self):
@@ -272,14 +272,14 @@ class UrlViewTests(TestCase):
         test_url.save()
         client = Client()
         response = client.get(
-            reverse('url:redirect_outside', args=(test_url.shorten_url,)))
+            reverse("url:redirect_outside", args=(test_url.shorten_url,)))
         self.assertEqual(response.status_code, 302)
 
     def test_shorten_view_displays_original_url_and_shorten_url(self):
         test_url = Url(original_url="google.com")
         test_url.save()
         response = self.client.get(
-            reverse('url:shorten', args=(test_url.shorten_url,)))
+            reverse("url:shorten", args=(test_url.shorten_url,)))
         self.assertContains(response, test_url.original_url)
         self.assertContains(response, test_url.shorten_url)
 
@@ -287,7 +287,7 @@ class UrlViewTests(TestCase):
         test_url = Url(original_url="google.com")
         test_url.save()
         response = self.client.get(
-            reverse('url:redirect_outside', args=(test_url.shorten_url,)))
+            reverse("url:redirect_outside", args=(test_url.shorten_url,)))
         self.assertRedirects(response, test_url.original_url_link,
                              fetch_redirect_response=False, status_code=302)
 
@@ -295,7 +295,7 @@ class UrlViewTests(TestCase):
         test_url = Url(original_url="https://google.com")
         test_url.save()
         response = self.client.get(
-            reverse('url:redirect_outside', args=(test_url.shorten_url,)))
+            reverse("url:redirect_outside", args=(test_url.shorten_url,)))
         self.assertRedirects(response, test_url.original_url_link,
                              fetch_redirect_response=False, status_code=302)
 
@@ -303,5 +303,6 @@ class UrlViewTests(TestCase):
         test_url = Url(original_url="https://www.google.com/search?q=test&sxsrf=ALiCzsYKabuujI5SyiHaoaALtC5NqdnrLQ:1668210996991&source=lnms&tbm=isch&sa=X&ved=2ahUKEwj29oqfqqf7AhVXCBAIHTDxDx8Q_AUoAXoECAIQAw&biw=1920&bih=860&dpr=1")
         test_url.save()
         response = self.client.get(
-            reverse('url:redirect_outside', args=(test_url.shorten_url,)))
-        self.assertRedirects(response, test_url.original_url_link, fetch_redirect_response=False, status_code=302)
+            reverse("url:redirect_outside", args=(test_url.shorten_url,)))
+        self.assertRedirects(response, test_url.original_url_link,
+                             fetch_redirect_response=False, status_code=302)
